@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication
 
-from Winfred.mainwindow import WinfredMainWindow
+from Winfred.MainWindow import WinfredMainWindow
 
 
 def main():
