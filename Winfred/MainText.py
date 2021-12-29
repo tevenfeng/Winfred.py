@@ -3,12 +3,12 @@ from PyQt6.QtGui import QFont
 
 
 class MainText(QTextEdit):
-    def __init__(self):
+    def __init__(self, font_size):
         super(MainText, self).__init__()
         self.textContent = ""
 
         font = QFont()
-        font.setPointSize(42)
+        font.setPointSize(font_size)
         self.setFont(font)
         self.setText(self.textContent)
 
