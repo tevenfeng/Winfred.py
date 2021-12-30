@@ -3,7 +3,7 @@ import logging
 from PyQt6.QtWidgets import QApplication
 
 from Winfred.MainWindow import WinfredMainWindow
-from Winfred.Conf import Conf
+from Winfred.Infrastructure import Conf
 
 
 def main():

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QTextEdit, QFrame
+from PyQt6.QtWidgets import QTextEdit
 from PyQt6.QtGui import QFont, QColor
 
 
