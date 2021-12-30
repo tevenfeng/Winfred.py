@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QMainWindow, QTextEdit
-from PyQt6.QtCore import Qt, QMargins
-from PyQt6.QtGui import QShortcut, QKeySequence, QPalette
+from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtCore import Qt, QMargins, QPointF
+from PyQt6.QtGui import QShortcut, QKeySequence
 
 from .MainText import MainText
 
@@ -14,7 +14,17 @@ class WinfredMainWindow(QMainWindow):
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
 
+        self.oldPos = self.pos()
+
         edit = MainText(conf.mainTextFontSize)
         self.setContentsMargins(QMargins(6, 2, 6, 2))
         self.setCentralWidget(edit)
+
+    def mousePressEvent(self, event):
+        self.oldPos = event.globalPosition()
+
+    def mouseMoveEvent(self, event):
+        delta = QPointF(event.globalPosition() - self.oldPos)
+        self.oldPos = event.globalPosition()
+        self.move(self.x() + delta.x(), self.y() + delta.y())
 

@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QTextEdit
-from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QTextEdit, QFrame
+from PyQt6.QtGui import QFont, QColor
 
 
 class MainText(QTextEdit):
@@ -11,4 +11,5 @@ class MainText(QTextEdit):
         font.setPointSize(font_size)
         self.setFont(font)
         self.setText(self.textContent)
-
+        self.setTextColor(QColor.fromRgb(255, 255, 255))
+        self.setStyleSheet("border: 0;")
