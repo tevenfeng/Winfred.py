@@ -10,15 +10,18 @@ from .Snippet import SnippetManager
 class WinfredMainWindow(QMainWindow):
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
-        self._mainEdit = None
+        self.__mainEdit = None
         self.__oldPos = self.pos()
         self.initUI(conf)
 
-        self._snippetManager = SnippetManager(conf)
+        self.__snippetManager = SnippetManager(conf)
+        self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hideMainWindow)
-        self._mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+y": self.showMainWindow})
-        self._mainHotKeyListener.start()
+        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+y": self.showMainWindow})
+        self.__mainHotKeyListener.start()
+
+        self.__keyboardController = keyboard.Controller()
 
     def initUI(self, conf):
         self.setWindowTitle("Winfred")
@@ -27,9 +30,9 @@ class WinfredMainWindow(QMainWindow):
         self.centerOnScreen()
         self.setStyleSheet("background-color: black;")
 
-        self._mainEdit = MainText(conf.mainTextFontSize)
+        self.__mainEdit = MainText(conf.mainTextFontSize)
         self.setContentsMargins(QMargins(6, 0, 6, 0))
-        self.setCentralWidget(self._mainEdit)
+        self.setCentralWidget(self.__mainEdit)
 
     def showMainWindow(self):
         self.show()
@@ -50,3 +53,15 @@ class WinfredMainWindow(QMainWindow):
         self.__oldPos = event.globalPosition()
         self.move(self.x() + delta.x(), self.y() + delta.y())
 
+    def handleSnippetReplaceSignal(self, backspace_num, target_snippet_str):
+        print("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
+        self.backspaceNTimes(backspace_num)
+        self.typeSomething(target_snippet_str)
+
+    def backspaceNTimes(self, backspace_count):
+        while backspace_count > 0:
+            self.__keyboardController.press(keyboard.Key.backspace)
+            backspace_count -= 1
+
+    def typeSomething(self, target_content):
+        self.__keyboardController.type(target_content)

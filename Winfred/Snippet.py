@@ -2,11 +2,16 @@ import os
 import json
 import logging
 
+from PyQt6.QtCore import pyqtSignal, QObject
+
 from pynput import keyboard
 
 
-class SnippetManager(object):
+class SnippetManager(QObject):
+    snippetReplaceSignal = pyqtSignal(int, str)
+
     def __init__(self, conf):
+        super(SnippetManager, self).__init__()
         self.__snippetDir = os.path.join(conf.getWinfredHomePath(), "snippets")
 
         self.__snippetsDict = {}
@@ -44,7 +49,8 @@ class SnippetManager(object):
                 print(self.__curStr)
                 if self.__curStr in self.__snippetsDict:
                     target_str = self.__snippetsDict[self.__curStr]
-                    print(target_str)
+                    target_str_len = len(target_str)
+                    self.snippetReplaceSignal.emit(target_str_len, target_str)
         except AttributeError:
             if key == keyboard.Key.backspace:
                 self.__curStr = self.__curStr[:-1]
