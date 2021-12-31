@@ -1,3 +1,4 @@
+import logging
 import time
 
 from PyQt6.QtWidgets import QMainWindow
@@ -56,7 +57,7 @@ class WinfredMainWindow(QMainWindow):
         self.move(self.x() + delta.x(), self.y() + delta.y())
 
     def handleSnippetReplaceSignal(self, backspace_num, target_snippet_str):
-        print("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
+        logging.info("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
         self.backspaceNTimes(backspace_num)
         time.sleep(0.05)
         self.typeSomething(target_snippet_str)
