@@ -24,29 +24,43 @@ def detectOS():
         return OsPlatform.Unknown
 
 
-class Conf(object):
+class ConfManager(object):
     def __init__(self):
-        self.os = detectOS()
+        self.__os = detectOS()
 
-        if self.os == OsPlatform.Linux:
+        if self.__os == OsPlatform.Linux:
             self.mainTextFontSize = 24
-            self.userProfileDir = os.path.expandvars("$HOME")
-        elif self.os == OsPlatform.Windows:
+            self.__userProfileDir = os.path.expandvars("$HOME")
+        elif self.__os == OsPlatform.Windows:
             self.mainTextFontSize = 28
-            self.userProfileDir = os.path.expandvars("%userprofile%")
-        elif self.os == OsPlatform.macOS:
+            self.__userProfileDir = os.path.expandvars("%userprofile%")
+        elif self.__os == OsPlatform.macOS:
             self.mainTextFontSize = 42
-            self.userProfileDir = os.path.expandvars("$HOME")
+            self.__userProfileDir = os.path.expandvars("$HOME")
 
-        self.winfredHomeDir = os.path.join(self.userProfileDir, ".winfred")
-        if not os.path.exists(self.winfredHomeDir):
-            os.mkdir(self.winfredHomeDir)
+        self.__winfredHomePath = os.path.join(self.__userProfileDir, ".winfred")
+        if not os.path.exists(self.__winfredHomePath):
+            os.mkdir(self.__winfredHomePath)
 
-        self.confFilePath = os.path.join(self.winfredHomeDir, "winfred.conf")
-        self.logFilePath = os.path.join(self.winfredHomeDir, "winfred.log")
-        logging.basicConfig(filename=self.logFilePath, level=logging.DEBUG,
+        self.__confFilePath = os.path.join(self.__winfredHomePath, "winfred.conf")
+        self.__logFilePath = os.path.join(self.__winfredHomePath, "winfred.log")
+        logging.basicConfig(filename=self.__logFilePath, level=logging.DEBUG,
                             format='%(levelname)s %(asctime)s [%(filename)s:%(lineno)d]%(message)s')
 
-        self.os = detectOS()
-        logging.info("Conf init, platform detected: %s", self.os)
-        logging.info("Conf init, winfred HOME: %s", self.winfredHomeDir)
+        logging.info("Conf init, platform detected: %s", self.__os)
+        logging.info("Conf init, winfred HOME: %s", self.__winfredHomePath)
+
+    def getOSPlatform(self):
+        return self.__os
+
+    def getUserProfilePath(self):
+        return self.__userProfileDir
+
+    def getWinfredHomePath(self):
+        return self.__winfredHomePath
+
+    def getConfigFilePath(self):
+        return self.__confFilePath
+
+    def getLogFilePath(self):
+        return self.__logFilePath

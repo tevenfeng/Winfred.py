@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import QLineEdit
 class MainText(QLineEdit):
     def __init__(self, font_size):
         super(MainText, self).__init__()
-        self.textContent = None
 
         self.setFontSize(font_size)
 
@@ -16,4 +15,10 @@ class MainText(QLineEdit):
         font = self.font()
         font.setPointSize(font_size)
         self.setFont(font)
-        self.setText(self.textContent)
+
+    def setContent(self, str_text):
+        self.setText(str_text)
+
+    def getContent(self):
+        return self.text()
+

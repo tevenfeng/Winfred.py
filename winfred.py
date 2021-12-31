@@ -1,13 +1,12 @@
 import sys
-import logging
 from PyQt6.QtWidgets import QApplication
 
 from Winfred.MainWindow import WinfredMainWindow
-from Winfred.Infrastructure import Conf
+from Winfred.Infrastructure import ConfManager
 
 
 def main():
-    conf = Conf()
+    conf = ConfManager()
 
     app = QApplication(sys.argv)
     winfred = WinfredMainWindow(conf)
