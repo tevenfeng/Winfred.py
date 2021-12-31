@@ -1,6 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QTextEdit, QLineEdit
-from PyQt6.QtGui import QFont, QColor
+from PyQt6.QtWidgets import QLineEdit
 
 
 class MainText(QLineEdit):
