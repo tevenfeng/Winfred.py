@@ -44,7 +44,7 @@ class ConfManager(object):
 
         self.__confFilePath = os.path.join(self.__winfredHomePath, "winfred.conf")
         self.__logFilePath = os.path.join(self.__winfredHomePath, "winfred.log")
-        logging.basicConfig(filename=self.__logFilePath, level=logging.DEBUG,
+        logging.basicConfig(filename=self.__logFilePath, level=logging.WARNING,
                             format='%(levelname)s %(asctime)s [%(filename)s:%(lineno)d]%(message)s')
 
         logging.info("Conf init, platform detected: %s", self.__os)
