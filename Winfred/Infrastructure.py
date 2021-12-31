@@ -12,7 +12,7 @@ class OsPlatform(Enum):
     Unknown = 4
 
 
-def detect_os():
+def detectOS():
     platform_str = platform.system()
     if platform_str == 'Windows':
         return OsPlatform.Windows
@@ -26,7 +26,7 @@ def detect_os():
 
 class Conf(object):
     def __init__(self):
-        self.os = detect_os()
+        self.os = detectOS()
 
         if self.os == OsPlatform.Linux:
             self.mainTextFontSize = 24
@@ -47,6 +47,6 @@ class Conf(object):
         logging.basicConfig(filename=self.logFilePath, level=logging.DEBUG,
                             format='%(levelname)s %(asctime)s [%(filename)s:%(lineno)d]%(message)s')
 
+        self.os = detectOS()
         logging.info("Conf init, platform detected: %s", self.os)
         logging.info("Conf init, winfred HOME: %s", self.winfredHomeDir)
-
