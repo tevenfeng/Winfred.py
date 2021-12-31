@@ -46,12 +46,13 @@ class SnippetManager(QObject):
                 self.__curStr = '$'
             else:
                 self.__curStr += key.char
-                print(self.__curStr)
                 if self.__curStr in self.__snippetsDict:
                     target_str = self.__snippetsDict[self.__curStr]
                     backspace_num = len(self.__curStr)
                     self.snippetReplaceSignal.emit(backspace_num, target_str)
+                    self.__curStr = ""
+                elif len(self.__curStr) > 15:
+                    self.__curStr = ""
         except AttributeError:
             if key == keyboard.Key.backspace:
                 self.__curStr = self.__curStr[:-1]
-                print(self.__curStr)

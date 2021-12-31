@@ -10,7 +10,7 @@ def main():
 
     app = QApplication(sys.argv)
     winfred = WinfredMainWindow(conf)
-    winfred.show()
+    # winfred.show()
     sys.exit(app.exec())
 
 
