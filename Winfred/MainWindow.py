@@ -11,7 +11,7 @@ class WinfredMainWindow(QMainWindow):
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
         self._mainEdit = None
-        self._oldPos = self.pos()
+        self.__oldPos = self.pos()
         self.initUI(conf)
 
         self._snippetManager = SnippetManager(conf)
@@ -43,10 +43,10 @@ class WinfredMainWindow(QMainWindow):
                   (resolution.height() / 3) - (self.frameSize().height() / 2))
 
     def mousePressEvent(self, event):
-        self._oldPos = event.globalPosition()
+        self.__oldPos = event.globalPosition()
 
     def mouseMoveEvent(self, event):
-        delta = QPointF(event.globalPosition() - self._oldPos)
-        self._oldPos = event.globalPosition()
+        delta = QPointF(event.globalPosition() - self.__oldPos)
+        self.__oldPos = event.globalPosition()
         self.move(self.x() + delta.x(), self.y() + delta.y())
 
