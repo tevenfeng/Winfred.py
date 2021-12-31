@@ -22,4 +22,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: winfred_windows
-        path: src/dist/windows
+        path: /tmp/winfred/winfred.exe
