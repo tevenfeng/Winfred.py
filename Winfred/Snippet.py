@@ -12,7 +12,10 @@ class SnippetManager(QObject):
 
     def __init__(self, conf):
         super(SnippetManager, self).__init__()
-        self.__snippetDir = os.path.join(conf.getWinfredHomePath(), "snippets")
+
+        self.__snippetDir = conf.getConfByName("snippet_dir")
+        if self.__snippetDir is None:
+            self.__snippetDir = os.path.join(conf.getWinfredHomePath(), "snippets")
 
         self.__snippetsDict = {}
         self.loadSnippets(self.__snippetDir)
@@ -28,17 +31,18 @@ class SnippetManager(QObject):
         self.__snippetKeyboardListener.start()
 
     def loadSnippets(self, snippet_dir):
-        for temp_name in os.listdir(snippet_dir):
-            temp_name_full = os.path.join(snippet_dir, temp_name)
-            if os.path.isdir(temp_name_full):
-                self.loadSnippets(temp_name_full)
-            elif os.path.isfile(temp_name_full):
-                if not temp_name_full.endswith("json"):
-                    continue
-                logging.info("SnippetManager loading: %s", temp_name_full)
-                with open(temp_name_full, 'r') as input_file:
-                    snippet_data = json.load(input_file)['alfredsnippet']
-                    self.__snippetsDict[snippet_data["keyword"]] = snippet_data["snippet"]
+        if os.path.exists(snippet_dir) and os.path.isdir(snippet_dir):
+            for temp_name in os.listdir(snippet_dir):
+                temp_name_full = os.path.join(snippet_dir, temp_name)
+                if os.path.isdir(temp_name_full):
+                    self.loadSnippets(temp_name_full)
+                elif os.path.isfile(temp_name_full):
+                    if not temp_name_full.endswith("json"):
+                        continue
+                    logging.info("SnippetManager loading: %s", temp_name_full)
+                    with open(temp_name_full, encoding='utf-8') as input_file:
+                        snippet_data = json.load(input_file)['alfredsnippet']
+                        self.__snippetsDict[snippet_data["keyword"]] = snippet_data["snippet"]
 
     def listenKeyboard(self, key):
         try:

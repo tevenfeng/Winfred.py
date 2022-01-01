@@ -1,6 +1,7 @@
 import os
 import platform
 import logging
+import configparser
 from enum import Enum, unique
 
 
@@ -26,7 +27,10 @@ def detectOS():
 
 class ConfManager(object):
     def __init__(self):
+        self.__isDebugMode = False
+        self.__configParser = configparser.ConfigParser()
         self.__os = detectOS()
+        self.__Confs = {}
 
         if self.__os == OsPlatform.Linux:
             self.mainTextFontSize = 24
@@ -42,9 +46,14 @@ class ConfManager(object):
         if not os.path.exists(self.__winfredHomePath):
             os.mkdir(self.__winfredHomePath)
 
-        self.__confFilePath = os.path.join(self.__winfredHomePath, "winfred.conf")
+        self.__configFilePath = os.path.join(self.__winfredHomePath, "winfred.conf")
+        self.loadAllConfig()
+
         self.__logFilePath = os.path.join(self.__winfredHomePath, "winfred.log")
-        logging.basicConfig(filename=self.__logFilePath, level=logging.WARNING,
+        self.__loggingLevel = logging.WARNING
+        if self.__isDebugMode:
+            self.__loggingLevel = logging.DEBUG
+        logging.basicConfig(filename=self.__logFilePath, level=self.__loggingLevel,
                             format='%(levelname)s %(asctime)s [%(filename)s:%(lineno)d]%(message)s')
 
         logging.info("Conf init, platform detected: %s", self.__os)
@@ -60,7 +69,23 @@ class ConfManager(object):
         return self.__winfredHomePath
 
     def getConfigFilePath(self):
-        return self.__confFilePath
+        return self.__configFilePath
 
     def getLogFilePath(self):
         return self.__logFilePath
+
+    def loadAllConfig(self):
+        if os.path.exists(self.__configFilePath) and os.path.isfile(self.__configFilePath):
+            self.__configParser.read(self.__configFilePath, encoding='utf-8')
+            for key in self.__configParser['DEFAULT']:
+                self.__Confs[key] = self.__configParser['DEFAULT'][key]
+                if key == 'debug_mode' and self.__configParser['DEFAULT'][key] == 'yes':
+                    self.__isDebugMode = True
+
+    def getAllConfs(self):
+        return self.__Confs
+
+    def getConfByName(self, key_name):
+        if key_name in self.__Confs:
+            return self.__Confs[key_name]
+        return None

@@ -10,7 +10,8 @@ def main():
 
     app = QApplication(sys.argv)
     winfred = WinfredMainWindow(conf)
-    # winfred.show()
+    if conf.getConfByName("hide_on_start") != "yes":
+        winfred.show()
     sys.exit(app.exec())
 
 
