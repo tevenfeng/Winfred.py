@@ -1,0 +1,6 @@
+[DEFAULT]
+debug_mode = no
+hide_on_start = yes
+hide_on_lose_focus = yes
+clear_on_hide = yes
+snippet_dir = C:\Users\fengd\OneDrive\软件\Alfred\Alfred.alfredpreferences\snippets
