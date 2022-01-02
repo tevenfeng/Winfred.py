@@ -10,6 +10,8 @@ def main():
 
     app = QApplication(sys.argv)
     winfred = WinfredMainWindow(conf)
+    winfred.show()
+    winfred.hide()  # resolve lagging because of hiding on start
     if conf.getConfByName("hide_on_start") != "yes":
         winfred.show()
     sys.exit(app.exec())
