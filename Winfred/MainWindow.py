@@ -36,7 +36,7 @@ class WinfredMainWindow(QMainWindow):
         self.setStyleSheet("background-color: black;")
 
         self.__mainEdit = MainText(conf.mainTextFontSize)
-        # self.__mainEdit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.__mainEdit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setContentsMargins(QMargins(6, 0, 6, 0))
         self.setCentralWidget(self.__mainEdit)
         self.setFocusProxy(self.__mainEdit)
@@ -45,8 +45,9 @@ class WinfredMainWindow(QMainWindow):
     def show(self):
         self.setVisible(True)
         self.setFocus()
-        self.activateWindow()
         self.__mainEdit.setFocus()
+        self.activateWindow()
+        self.backspaceNTimes(1)     # use input event to force focus on the __mainEdit(Windows need this)
 
     def hide(self):
         self.clearFocus()
