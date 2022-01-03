@@ -1,12 +1,10 @@
 import logging
-import time
 
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt, QMargins, QPointF
 from PyQt6.QtGui import QShortcut, QKeySequence, QGuiApplication
 from pynput import keyboard
 
-from .Infrastructure import OsPlatform
 from .MainText import MainText
 from .Snippet import SnippetManager
 
@@ -69,7 +67,6 @@ class WinfredMainWindow(QMainWindow):
     def handleSnippetReplaceSignal(self, backspace_num, target_snippet_str):
         logging.info("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
         self.backspaceNTimes(backspace_num)
-        # time.sleep(0.05)
         self.typeSomething(target_snippet_str)
 
     def backspaceNTimes(self, backspace_count):
