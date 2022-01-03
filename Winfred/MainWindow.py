@@ -31,7 +31,9 @@ class WinfredMainWindow(QMainWindow):
 
     def initUI(self, conf):
         self.setWindowTitle("Winfred")
-        self.setWindowFlag(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint
+                           | Qt.WindowType.WindowStaysOnTopHint
+                           | Qt.WindowType.Tool)
         self.setFixedSize(700, 64)
         self.centerOnScreen()
         self.setStyleSheet("background-color: black;")
