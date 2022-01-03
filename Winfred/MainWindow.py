@@ -21,8 +21,11 @@ class WinfredMainWindow(QMainWindow):
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
-        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+y": self.show})
+        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.show})
         self.__mainHotKeyListener.start()
+
+        self.__clipboardHotKeyListener = keyboard.GlobalHotKeys({"<cmd_l>+c": self.showClipboard})
+        self.__clipboardHotKeyListener.start()
 
         self.__keyboardController = keyboard.Controller()
 
@@ -64,11 +67,6 @@ class WinfredMainWindow(QMainWindow):
         self.__oldPos = event.globalPosition()
         self.move(self.x() + delta.x(), self.y() + delta.y())
 
-    def handleSnippetReplaceSignal(self, backspace_num, target_snippet_str):
-        logging.info("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
-        self.backspaceNTimes(backspace_num)
-        self.typeSomething(target_snippet_str)
-
     def backspaceNTimes(self, backspace_count):
         while backspace_count > 0:
             self.__keyboardController.press(keyboard.Key.backspace)
@@ -77,3 +75,12 @@ class WinfredMainWindow(QMainWindow):
 
     def typeSomething(self, target_content):
         self.__keyboardController.type(target_content)
+
+    def handleSnippetReplaceSignal(self, backspace_num, target_snippet_str):
+        logging.info("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
+        self.backspaceNTimes(backspace_num)
+        self.typeSomething(target_snippet_str)
+
+    def showClipboard(self):
+        self.show()
+
