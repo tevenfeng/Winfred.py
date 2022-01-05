@@ -21,6 +21,7 @@ class WinfredMainWindow(QMainWindow):
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
+        QShortcut(QKeySequence(Qt.Key.Key_Alt + Qt.Key.Key_F4), self, self.hide)
         self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.show})
         self.__mainHotKeyListener.start()
 
