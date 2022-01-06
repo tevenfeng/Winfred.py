@@ -7,6 +7,7 @@ from pynput import keyboard
 
 from .MainText import MainText
 from .Snippet import SnippetManager
+from .SystemTray import SystemTray
 
 
 class WinfredMainWindow(QMainWindow):
@@ -14,6 +15,7 @@ class WinfredMainWindow(QMainWindow):
         super(WinfredMainWindow, self).__init__()
         self.__conf = conf
         self.__mainEdit = None
+        self.__systemTray = None
         self.__oldPos = self.pos()
         self.initUI(conf)
 
@@ -21,7 +23,6 @@ class WinfredMainWindow(QMainWindow):
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
-        QShortcut(QKeySequence(Qt.Key.Key_Alt + Qt.Key.Key_F4), self, self.hide)
         self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.show})
         self.__mainHotKeyListener.start()
 
@@ -45,6 +46,9 @@ class WinfredMainWindow(QMainWindow):
         self.setCentralWidget(self.__mainEdit)
         self.setFocusProxy(self.__mainEdit)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        self.__systemTray = SystemTray()
+        self.__systemTray.show()
 
     def show(self):
         self.setVisible(True)
