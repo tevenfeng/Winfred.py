@@ -8,7 +8,7 @@ class SystemTray(QSystemTrayIcon):
     def __init__(self):
         super(SystemTray, self).__init__()
 
-        icon = QIcon("../../assets/Winfred64.ico")
+        icon = QIcon("../assets/Winfred64.ico")
         self.setIcon(icon)
 
         # Creating the options
