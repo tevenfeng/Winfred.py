@@ -12,13 +12,13 @@ from .SystemTray import SystemTray
 
 
 class WinfredMainWindow(QMainWindow):
-    def __init__(self, conf):
+    def __init__(self, main_app, conf):
         super(WinfredMainWindow, self).__init__()
         self.__conf = conf
         self.__mainEdit = None
         self.__systemTray = None
         self.__oldPos = self.pos()
-        self.initUI(conf)
+        self.initUI(main_app, conf)
 
         self.__snippetManager = SnippetManager(conf)
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
@@ -32,7 +32,7 @@ class WinfredMainWindow(QMainWindow):
 
         self.__keyboardController = keyboard.Controller()
 
-    def initUI(self, conf):
+    def initUI(self, main_app, conf):
         self.setWindowTitle("Winfred")
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint
                            | Qt.WindowType.WindowStaysOnTopHint
@@ -49,9 +49,8 @@ class WinfredMainWindow(QMainWindow):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         icon_path = os.path.join(conf.getAssetsPath(), "winfred.png")
-        print(icon_path)
         icon = QIcon(icon_path)
-        self.__systemTray = SystemTray(icon, self)
+        self.__systemTray = SystemTray(main_app, icon, self)
         self.__systemTray.show()
 
     def show(self):
@@ -59,7 +58,8 @@ class WinfredMainWindow(QMainWindow):
         self.setFocus()
         self.__mainEdit.setFocus()
         self.activateWindow()
-        self.backspaceNTimes(1)     # use input event to force focus on the __mainEdit(Windows need this)
+        if self.__conf.isOnWindows():
+            self.backspaceNTimes(1)     # use input event to force focus on the __mainEdit(Windows need this)
 
     def hide(self):
         self.clearFocus()

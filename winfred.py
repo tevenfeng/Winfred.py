@@ -10,7 +10,7 @@ def main():
     conf = ConfManager()
 
     app = QApplication(sys.argv)
-    winfred = WinfredMainWindow(conf)
+    winfred = WinfredMainWindow(app, conf)
     if conf.getOSPlatform() == OsPlatform.Linux or conf.getOSPlatform() == OsPlatform.macOS:
         if conf.getConfByName("hide_on_start") != "yes":
             winfred.show()

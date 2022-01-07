@@ -63,6 +63,15 @@ class ConfManager(object):
     def getOSPlatform(self):
         return self.__os
 
+    def isOnWindows(self):
+        return self.__os == OsPlatform.Windows
+
+    def isOnLinux(self):
+        return self.__os == OsPlatform.Linux
+
+    def isOnMacOS(self):
+        return self.__os == OsPlatform.macOS
+
     def getUserProfilePath(self):
         return self.__userProfileDir
 
@@ -93,3 +102,6 @@ class ConfManager(object):
 
     def getAssetsPath(self):
         return self.__assets_path
+
+    def isDebugMode(self):
+        return self.__isDebugMode
