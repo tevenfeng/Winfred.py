@@ -1,8 +1,9 @@
 import logging
+import os.path
 
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QStyle
 from PyQt6.QtCore import Qt, QMargins, QPointF
-from PyQt6.QtGui import QShortcut, QKeySequence, QGuiApplication
+from PyQt6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
 from .MainText import MainText
@@ -47,7 +48,10 @@ class WinfredMainWindow(QMainWindow):
         self.setFocusProxy(self.__mainEdit)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        self.__systemTray = SystemTray()
+        icon_path = os.path.join(conf.getAssetsPath(), "winfred.png")
+        print(icon_path)
+        icon = QIcon(icon_path)
+        self.__systemTray = SystemTray(icon, self)
         self.__systemTray.show()
 
     def show(self):

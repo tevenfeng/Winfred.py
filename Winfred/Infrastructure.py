@@ -31,6 +31,7 @@ class ConfManager(object):
         self.__configParser = configparser.ConfigParser()
         self.__os = detectOS()
         self.__Confs = {}
+        self.__assets_path = os.path.join(os.path.dirname(__file__), "assets")
 
         if self.__os == OsPlatform.Linux:
             self.mainTextFontSize = 24
@@ -89,3 +90,6 @@ class ConfManager(object):
         if key_name in self.__Confs:
             return self.__Confs[key_name]
         return None
+
+    def getAssetsPath(self):
+        return self.__assets_path
