@@ -1,3 +1,4 @@
+import sys
 import os
 import platform
 import logging
@@ -31,7 +32,11 @@ class ConfManager(object):
         self.__configParser = configparser.ConfigParser()
         self.__os = detectOS()
         self.__Confs = {}
-        self.__assets_path = os.path.join(os.path.dirname(__file__), "assets")
+
+        if getattr(sys, 'frozen', False):
+            self.__assets_path = os.path.join(sys._MEIPASS, "assets")
+        else:
+            self.__assets_path = os.path.join(os.path.dirname(__file__), "assets")
 
         if self.__os == OsPlatform.Linux:
             self.mainTextFontSize = 24
