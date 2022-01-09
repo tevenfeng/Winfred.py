@@ -3,8 +3,8 @@ from PySide6.QtWidgets import QLineEdit
 
 
 class MainText(QLineEdit):
-    def __init__(self, font_size):
-        super(MainText, self).__init__()
+    def __init__(self, font_size, parent=None):
+        super(MainText, self).__init__(parent)
 
         self.setFontSize(font_size)
 

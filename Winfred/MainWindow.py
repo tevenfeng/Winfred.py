@@ -1,7 +1,7 @@
 import logging
 import os.path
 
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QMainWindow, QGridLayout, QWidget
 from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
@@ -16,6 +16,8 @@ class WinfredMainWindow(QMainWindow):
 
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
+        self.__centralWidget = None
+        self.__mainLayout = None
         self.__conf = conf
         self.__mainEdit = None
         self.__systemTray = None
@@ -40,13 +42,18 @@ class WinfredMainWindow(QMainWindow):
         self.setFixedSize(700, 64)
         self.centerOnScreen()
         self.setStyleSheet("background-color: black;")
-
-        self.__mainEdit = MainText(conf.mainTextFontSize)
-        self.__mainEdit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setContentsMargins(QMargins(6, 0, 6, 0))
-        self.setCentralWidget(self.__mainEdit)
-        self.setFocusProxy(self.__mainEdit)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        self.__centralWidget = QWidget(self)
+        self.setCentralWidget(self.__centralWidget)
+
+        self.__mainLayout = QGridLayout(self.__centralWidget)
+        self.__centralWidget.setLayout(self.__mainLayout)
+
+        self.__mainEdit = MainText(conf.mainTextFontSize, self.__centralWidget)
+        self.__mainEdit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.__mainLayout.addWidget(self.__mainEdit, 0, 0, 1, 2)
 
         self.initSystemTrayIcon(conf)
 
