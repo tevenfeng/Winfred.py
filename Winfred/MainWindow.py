@@ -38,6 +38,9 @@ class WinfredMainWindow(QMainWindow):
 
     def initUI(self, conf):
         self.setWindowTitle("Winfred")
+        icon_path = os.path.join(conf.getAssetsPath(), "winfred.ico")
+        icon = QIcon(icon_path)
+        self.setWindowIcon(icon)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.setFixedSize(700, 64)
         self.centerOnScreen()
