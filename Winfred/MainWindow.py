@@ -9,6 +9,7 @@ from pynput import keyboard
 from .MainText import MainText
 from .Snippet import SnippetManager
 from .SystemTray import SystemTray
+from .ResultsView import ResultsView
 
 
 class WinfredMainWindow(QMainWindow):
@@ -20,6 +21,7 @@ class WinfredMainWindow(QMainWindow):
         self.__mainLayout = None
         self.__conf = conf
         self.__mainEdit = None
+        self.__resultsList = None
         self.__systemTray = None
         self.__oldPos = self.pos()
         self.initUI(conf)
@@ -56,9 +58,21 @@ class WinfredMainWindow(QMainWindow):
 
         self.__mainEdit = MainText(conf.mainTextFontSize, self.__centralWidget)
         self.__mainEdit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        self.__mainLayout.addWidget(self.__mainEdit, 0, 0, 1, 2)
+        self.__mainLayout.addWidget(self.__mainEdit, 0, 0)
+
+        self.__resultsList = ResultsView(self)
+        self.__mainLayout.addWidget(self.__resultsList, 1, 0)
+        self.__resultsList.hide()
 
         self.initSystemTrayIcon(conf)
+
+    def shrinkSize(self):
+        self.setFixedSize(700, 64)
+        self.__resultsList.hide()
+
+    def enlargeSize(self):
+        self.setFixedSize(700, 640)
+        self.__resultsList.show()
 
     def initSystemTrayIcon(self, conf):
         icon_path = os.path.join(conf.getAssetsPath(), "winfred.png")
@@ -111,5 +125,6 @@ class WinfredMainWindow(QMainWindow):
         self.typeSomething(target_snippet_str)
 
     def showClipboard(self):
+        self.enlargeSize()
         self.show()
 
