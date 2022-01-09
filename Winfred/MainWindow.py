@@ -1,8 +1,8 @@
 import logging
 import os.path
 
-from PySide6.QtWidgets import QMainWindow, QStyle
-from PySide6.QtCore import Qt, QMargins, QPointF
+from PySide6.QtWidgets import QMainWindow
+from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
@@ -12,13 +12,15 @@ from .SystemTray import SystemTray
 
 
 class WinfredMainWindow(QMainWindow):
-    def __init__(self, main_app, conf):
+    winfredQuitSignal = Signal()
+
+    def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
         self.__conf = conf
         self.__mainEdit = None
         self.__systemTray = None
         self.__oldPos = self.pos()
-        self.initUI(main_app, conf)
+        self.initUI(conf)
 
         self.__snippetManager = SnippetManager(conf)
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
@@ -32,7 +34,7 @@ class WinfredMainWindow(QMainWindow):
 
         self.__keyboardController = keyboard.Controller()
 
-    def initUI(self, main_app, conf):
+    def initUI(self, conf):
         self.setWindowTitle("Winfred")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.setFixedSize(700, 64)
@@ -46,10 +48,18 @@ class WinfredMainWindow(QMainWindow):
         self.setFocusProxy(self.__mainEdit)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
+        self.initSystemTrayIcon(conf)
+
+    def initSystemTrayIcon(self, conf):
         icon_path = os.path.join(conf.getAssetsPath(), "winfred.png")
         icon = QIcon(icon_path)
-        self.__systemTray = SystemTray(main_app, icon, self)
+        self.__systemTray = SystemTray(icon, self)
         self.__systemTray.show()
+        self.__systemTray.systemTrayDisplaySignal.connect(self.show)
+        self.__systemTray.systemTrayQuitSignal.connect(self.winfredQuit)
+
+    def winfredQuit(self):
+        self.winfredQuitSignal.emit()
 
     def show(self):
         self.setVisible(True)
