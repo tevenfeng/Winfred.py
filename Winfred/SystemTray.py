@@ -1,8 +1,8 @@
 import logging
 
-from PyQt6.QtCore import QSize
-from PyQt6.QtGui import QAction, QCursor
-from PyQt6.QtWidgets import QSystemTrayIcon, QMenu
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QAction, QCursor
+from PySide6.QtWidgets import QSystemTrayIcon, QMenu
 
 
 class SystemTray(QSystemTrayIcon):

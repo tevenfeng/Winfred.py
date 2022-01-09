@@ -1,9 +1,9 @@
 import logging
 import os.path
 
-from PyQt6.QtWidgets import QMainWindow, QStyle
-from PyQt6.QtCore import Qt, QMargins, QPointF
-from PyQt6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
+from PySide6.QtWidgets import QMainWindow, QStyle
+from PySide6.QtCore import Qt, QMargins, QPointF
+from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
 from .MainText import MainText
@@ -34,9 +34,7 @@ class WinfredMainWindow(QMainWindow):
 
     def initUI(self, main_app, conf):
         self.setWindowTitle("Winfred")
-        self.setWindowFlag(Qt.WindowType.FramelessWindowHint
-                           | Qt.WindowType.WindowStaysOnTopHint
-                           | Qt.WindowType.Tool)
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.setFixedSize(700, 64)
         self.centerOnScreen()
         self.setStyleSheet("background-color: black;")

@@ -2,13 +2,13 @@ import os
 import json
 import logging
 
-from PyQt6.QtCore import pyqtSignal, QObject
+from PySide6.QtCore import Signal, QObject
 
 from pynput import keyboard
 
 
 class SnippetManager(QObject):
-    snippetReplaceSignal = pyqtSignal(int, str)
+    snippetReplaceSignal = Signal(int, str)
 
     def __init__(self, conf):
         super(SnippetManager, self).__init__()

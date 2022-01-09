@@ -1,5 +1,5 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLineEdit
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QLineEdit
 
 
 class MainText(QLineEdit):
@@ -9,7 +9,7 @@ class MainText(QLineEdit):
         self.setFontSize(font_size)
 
         self.setStyleSheet("border: 0; color: white;")
-        self.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.setAlignment(Qt.AlignVCenter)
 
     def setFontSize(self, font_size):
         font = self.font()

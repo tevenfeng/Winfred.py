@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 
 from Winfred.MainWindow import WinfredMainWindow
 from Winfred.Infrastructure import ConfManager, OsPlatform
