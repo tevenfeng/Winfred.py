@@ -17,6 +17,10 @@ class SystemTray(QSystemTrayIcon):
         menu = QMenu(parent)
         menu.setStyleSheet("background-color: white; color: black;")
 
+        display_mainwindow_action = QAction("Display", self)
+        display_mainwindow_action.triggered.connect(self.handleTrayIconDisplayMainwindow)
+        menu.addAction(display_mainwindow_action)
+
         quit_action = QAction("Quit", self)
         quit_action.triggered.connect(self.handleTrayIconQuit)
         menu.addAction(quit_action)
@@ -34,3 +38,6 @@ class SystemTray(QSystemTrayIcon):
 
     def handleTrayIconQuit(self):
         self.systemTrayQuitSignal.emit()
+
+    def handleTrayIconDisplayMainwindow(self):
+        self.systemTrayDisplaySignal.emit()
