@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
+from .Infrastructure import Mode
 from .MainText import MainText
 from .Snippet import SnippetManager
 from .SystemTray import SystemTray
@@ -17,6 +18,7 @@ class WinfredMainWindow(QMainWindow):
 
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
+        self.__currentMode = Mode.NormalMode
         self.__centralWidget = None
         self.__mainLayout = None
         self.__conf = conf
@@ -30,7 +32,7 @@ class WinfredMainWindow(QMainWindow):
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
-        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.show})
+        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.showMainSearch})
         self.__mainHotKeyListener.start()
 
         self.__clipboardHotKeyListener = keyboard.GlobalHotKeys({"<cmd_l>+c": self.showClipboard})
@@ -65,6 +67,19 @@ class WinfredMainWindow(QMainWindow):
         self.__resultsList.hide()
 
         self.initSystemTrayIcon(conf)
+
+    def getCurrentMode(self):
+        return self.__currentMode
+
+    def setCurrentMode(self, mode: Mode):
+        if mode != self.getCurrentMode():
+            self.__currentMode = mode
+            if mode == Mode.NormalMode:
+                self.shrinkSize()
+            elif mode == Mode.ListMode:
+                self.enlargeSize()
+            elif mode == Mode.DisplayMode:
+                self.enlargeSize()
 
     def shrinkSize(self):
         self.setFixedSize(700, 64)
@@ -124,7 +139,11 @@ class WinfredMainWindow(QMainWindow):
         self.backspaceNTimes(backspace_num)
         self.typeSomething(target_snippet_str)
 
+    def showMainSearch(self):
+        self.setCurrentMode(Mode.NormalMode)
+        self.show()
+
     def showClipboard(self):
-        self.enlargeSize()
+        self.setCurrentMode(Mode.DisplayMode)
         self.show()
 
