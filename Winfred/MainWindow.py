@@ -94,7 +94,7 @@ class WinfredMainWindow(QMainWindow):
         icon = QIcon(icon_path)
         self.__systemTray = SystemTray(icon, self)
         self.__systemTray.show()
-        self.__systemTray.systemTrayDisplaySignal.connect(self.show)
+        self.__systemTray.systemTrayDisplaySignal.connect(self.showMainSearch)
         self.__systemTray.systemTrayQuitSignal.connect(self.winfredQuit)
 
     def winfredQuit(self):
