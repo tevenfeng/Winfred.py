@@ -40,6 +40,9 @@ class WinfredMainWindow(QMainWindow):
         self.__clipboardHotKeyListener = keyboard.GlobalHotKeys({"<cmd_l>+c": self.__winfredClipboardShowSignal.emit})
         self.__clipboardHotKeyListener.start()
 
+        self.__winfredMainSearchShowSignal.connect(self.showMainSearch)
+        self.__winfredClipboardShowSignal.connect(self.showClipboard)
+
         self.__keyboardController = keyboard.Controller()
 
     def initUI(self, conf):
@@ -148,9 +151,3 @@ class WinfredMainWindow(QMainWindow):
     def showClipboard(self):
         self.setCurrentMode(WinfredMode.DisplayMode)
         self.show()
-
-    def handleMainSearchShowSignal(self):
-        self.__winfredMainSearchShowSignal.connect(self.showMainSearch)
-
-    def handleClipboardShowSignal(self):
-        self.__winfredClipboardShowSignal.connect(self.showClipboard)
