@@ -6,9 +6,9 @@ from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
-from .Infrastructure import Mode
+from .Infrastructure.ModeManager import WinfredMode
 from .MainText import MainText
-from .Snippet import SnippetManager
+from .SnippetManager import SnippetManager
 from .SystemTray import SystemTray
 from .ResultsView import ResultsView
 
@@ -18,7 +18,7 @@ class WinfredMainWindow(QMainWindow):
 
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
-        self.__currentMode = Mode.NormalMode
+        self.__currentMode = WinfredMode.NormalMode
         self.__centralWidget = None
         self.__mainLayout = None
         self.__conf = conf
@@ -71,14 +71,14 @@ class WinfredMainWindow(QMainWindow):
     def getCurrentMode(self):
         return self.__currentMode
 
-    def setCurrentMode(self, mode: Mode):
+    def setCurrentMode(self, mode: WinfredMode):
         if mode != self.getCurrentMode():
             self.__currentMode = mode
-            if mode == Mode.NormalMode:
+            if mode == WinfredMode.NormalMode:
                 self.shrinkSize()
-            elif mode == Mode.ListMode:
+            elif mode == WinfredMode.ListMode:
                 self.enlargeSize()
-            elif mode == Mode.DisplayMode:
+            elif mode == WinfredMode.DisplayMode:
                 self.enlargeSize()
 
     def shrinkSize(self):
@@ -140,10 +140,10 @@ class WinfredMainWindow(QMainWindow):
         self.typeSomething(target_snippet_str)
 
     def showMainSearch(self):
-        self.setCurrentMode(Mode.NormalMode)
+        self.setCurrentMode(WinfredMode.NormalMode)
         self.show()
 
     def showClipboard(self):
-        self.setCurrentMode(Mode.DisplayMode)
+        self.setCurrentMode(WinfredMode.DisplayMode)
         self.show()
 

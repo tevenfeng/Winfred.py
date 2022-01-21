@@ -3,20 +3,20 @@ import logging
 import os
 import sys
 
-from Winfred.Infrastructure import detectOS, OsPlatform
+from Winfred.Infrastructure.PlatformManager import OsPlatform, PlatformManager
 
 
 class ConfManager(object):
     def __init__(self):
         self.__isDebugMode = False
         self.__configParser = configparser.ConfigParser()
-        self.__os = detectOS()
+        self.__os = PlatformManager.detectOS()
         self.__Confs = {}
 
         if getattr(sys, 'frozen', False):
-            self.__assets_path = os.path.join(sys._MEIPASS, "assets")
+            self.__assets_path = os.path.join(sys._MEIPASS, "../assets")
         else:
-            self.__assets_path = os.path.join(os.path.dirname(__file__), "assets")
+            self.__assets_path = os.path.join(os.path.dirname(__file__), "../assets")
 
         if self.__os == OsPlatform.Linux:
             self.mainTextFontSize = 24

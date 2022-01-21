@@ -3,8 +3,8 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from Winfred.MainWindow import WinfredMainWindow
-from Winfred.Infrastructure import OsPlatform
-from Winfred.ConfManager import ConfManager
+from Winfred.Infrastructure.PlatformManager import OsPlatform
+from Winfred.Infrastructure.ConfManager import ConfManager
 
 
 def main():
