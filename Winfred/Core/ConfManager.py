@@ -14,7 +14,7 @@ class ConfManager(object):
         self.__Confs = {}
 
         if getattr(sys, 'frozen', False):
-            self.__assets_path = os.path.join(sys._MEIPASS, "../assets")
+            self.__assets_path = os.path.join(sys._MEIPASS, "assets")
         else:
             self.__assets_path = os.path.join(os.path.dirname(__file__), "../assets")
 
