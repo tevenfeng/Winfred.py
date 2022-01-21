@@ -6,11 +6,11 @@ from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
-from .Infrastructure.ModeManager import WinfredMode
-from .MainText import MainText
-from .SnippetManager import SnippetManager
-from .SystemTray import SystemTray
-from .ResultsView import ResultsView
+from Winfred.Infrastructure.ModeManager import WinfredMode
+from Winfred.MainText import MainText
+from Winfred.Core.SnippetManager import SnippetManager
+from Winfred.SystemTray import SystemTray
+from Winfred.ResultsView import ResultsView
 
 
 class WinfredMainWindow(QMainWindow):
