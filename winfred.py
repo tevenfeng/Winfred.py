@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QApplication
 
 from Winfred.MainWindow import WinfredMainWindow
 from Winfred.Infrastructure.PlatformManager import OsPlatform
-from Winfred.Infrastructure.ConfManager import ConfManager
+from Winfred.Core.ConfManager import ConfManager
 
 
 def main():
