@@ -15,6 +15,8 @@ from Winfred.ResultsView import ResultsView
 
 class WinfredMainWindow(QMainWindow):
     winfredQuitSignal = Signal()
+    __winfredMainSearchShowSignal = Signal()
+    __winfredClipboardShowSignal = Signal()
 
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
@@ -32,10 +34,10 @@ class WinfredMainWindow(QMainWindow):
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
-        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.showMainSearch})
+        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.__winfredMainSearchShowSignal.emit})
         self.__mainHotKeyListener.start()
 
-        self.__clipboardHotKeyListener = keyboard.GlobalHotKeys({"<cmd_l>+c": self.showClipboard})
+        self.__clipboardHotKeyListener = keyboard.GlobalHotKeys({"<cmd_l>+c": self.__winfredClipboardShowSignal.emit})
         self.__clipboardHotKeyListener.start()
 
         self.__keyboardController = keyboard.Controller()
@@ -147,3 +149,8 @@ class WinfredMainWindow(QMainWindow):
         self.setCurrentMode(WinfredMode.DisplayMode)
         self.show()
 
+    def handleMainSearchShowSignal(self):
+        self.__winfredMainSearchShowSignal.connect(self.showMainSearch)
+
+    def handleClipboardShowSignal(self):
+        self.__winfredClipboardShowSignal.connect(self.showClipboard)
