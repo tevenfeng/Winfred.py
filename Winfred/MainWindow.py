@@ -148,6 +148,7 @@ class WinfredMainWindow(QMainWindow):
             self.enlargeSize()
 
     def handleWinfredFocusChangedSignal(self):
+        # self.hide function will not make isActiveWindow return False, so we have to manually do it
         if not self.__winfredStatusManager.isWinfredActivated() or not self.isActiveWindow():
             self.hide()
 
