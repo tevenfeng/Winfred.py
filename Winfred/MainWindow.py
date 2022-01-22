@@ -6,9 +6,9 @@ from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
-from Winfred.Infrastructure.ModeManager import WinfredMode
-from Winfred.MainText import MainText
+from Winfred.Core.ModeManager import WinfredMode, ModeManager
 from Winfred.Core.SnippetManager import SnippetManager
+from Winfred.MainText import MainText
 from Winfred.SystemTray import SystemTray
 from Winfred.ResultsView import ResultsView
 
@@ -20,7 +20,6 @@ class WinfredMainWindow(QMainWindow):
 
     def __init__(self, conf):
         super(WinfredMainWindow, self).__init__()
-        self.__currentMode = WinfredMode.NormalMode
         self.__centralWidget = None
         self.__mainLayout = None
         self.__conf = conf
@@ -29,6 +28,9 @@ class WinfredMainWindow(QMainWindow):
         self.__systemTray = None
         self.__oldPos = self.pos()
         self.initUI(conf)
+
+        self.__winfredModeManager = ModeManager()
+        self.__winfredModeManager.winfredModeChangeSignal.connect(self.handleWinfredModeChangeSignal)
 
         self.__snippetManager = SnippetManager(conf)
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
@@ -73,18 +75,8 @@ class WinfredMainWindow(QMainWindow):
 
         self.initSystemTrayIcon(conf)
 
-    def getCurrentMode(self):
-        return self.__currentMode
-
     def setCurrentMode(self, mode: WinfredMode):
-        if mode != self.getCurrentMode():
-            self.__currentMode = mode
-            if mode == WinfredMode.NormalMode:
-                self.shrinkSize()
-            elif mode == WinfredMode.ListMode:
-                self.enlargeSize()
-            elif mode == WinfredMode.DisplayMode:
-                self.enlargeSize()
+        self.__winfredModeManager.setCurrentMode(mode)
 
     def shrinkSize(self):
         self.setFixedSize(700, 64)
@@ -143,6 +135,14 @@ class WinfredMainWindow(QMainWindow):
         logging.info("len:%d, target snippet:%s" % (backspace_num, target_snippet_str))
         self.backspaceNTimes(backspace_num)
         self.typeSomething(target_snippet_str)
+
+    def handleWinfredModeChangeSignal(self, new_mode: WinfredMode):
+        if new_mode == WinfredMode.NormalMode:
+            self.shrinkSize()
+        elif new_mode == WinfredMode.ListMode:
+            self.enlargeSize()
+        elif new_mode == WinfredMode.DisplayMode:
+            self.enlargeSize()
 
     def showMainSearch(self):
         self.setCurrentMode(WinfredMode.NormalMode)
