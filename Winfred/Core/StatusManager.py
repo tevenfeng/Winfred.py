@@ -10,18 +10,25 @@ class WinfredMode(Enum):
     DisplayMode = 3             # search bar, list and preview
 
 
-class ModeManager(QObject):
+class StatusManager(QObject):
     winfredModeChangeSignal = Signal(WinfredMode)
 
     def __init__(self):
-        super(ModeManager, self).__init__()
+        super(StatusManager, self).__init__()
+        self.__is_activated = True
         self.__current_mode = WinfredMode.NormalMode
 
-    def getCurrentMode(self):
+    def getWinfredMode(self):
         return self.__current_mode
 
-    def setCurrentMode(self, new_mode: WinfredMode):
+    def setWinfredMode(self, new_mode: WinfredMode):
         if new_mode == self.__current_mode:
             return
         self.winfredModeChangeSignal.emit(new_mode)
         self.__current_mode = new_mode
+
+    def isWinfredActivated(self):
+        return self.__is_activated
+
+    def setWinfredActivated(self, is_activated: bool):
+        self.__is_activated = is_activated

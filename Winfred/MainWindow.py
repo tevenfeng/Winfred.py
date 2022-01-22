@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt, QMargins, QPointF, Signal
 from PySide6.QtGui import QShortcut, QKeySequence, QGuiApplication, QIcon
 from pynput import keyboard
 
-from Winfred.Core.ModeManager import WinfredMode, ModeManager
+from Winfred.Core.StatusManager import WinfredMode, StatusManager
 from Winfred.Core.SnippetManager import SnippetManager
 from Winfred.MainText import MainText
 from Winfred.SystemTray import SystemTray
@@ -29,8 +29,8 @@ class WinfredMainWindow(QMainWindow):
         self.__oldPos = self.pos()
         self.initUI(conf)
 
-        self.__winfredModeManager = ModeManager()
-        self.__winfredModeManager.winfredModeChangeSignal.connect(self.handleWinfredModeChangeSignal)
+        self.__winfredStatusManager = StatusManager()
+        self.__winfredStatusManager.winfredModeChangeSignal.connect(self.handleWinfredModeChangeSignal)
 
         self.__snippetManager = SnippetManager(conf)
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
@@ -76,7 +76,7 @@ class WinfredMainWindow(QMainWindow):
         self.initSystemTrayIcon(conf)
 
     def setCurrentMode(self, mode: WinfredMode):
-        self.__winfredModeManager.setCurrentMode(mode)
+        self.__winfredStatusManager.setWinfredMode(mode)
 
     def shrinkSize(self):
         self.setFixedSize(700, 64)
@@ -101,13 +101,16 @@ class WinfredMainWindow(QMainWindow):
         self.setVisible(True)
         self.setFocus()
         self.__mainEdit.setFocus()
+        self.__winfredStatusManager.setWinfredActivated(True)
         self.activateWindow()
+        self.raise_()
         if self.__conf.isOnWindows():
             self.backspaceNTimes(1)     # use input event to force focus on the __mainEdit(Windows need this)
 
     def hide(self):
-        self.clearFocus()
+        self.__winfredStatusManager.setWinfredActivated(False)
         self.setVisible(False)
+        self.clearFocus()
 
     def centerOnScreen(self):
         resolution = QGuiApplication.primaryScreen().availableGeometry()
@@ -143,6 +146,10 @@ class WinfredMainWindow(QMainWindow):
             self.enlargeSize()
         elif new_mode == WinfredMode.DisplayMode:
             self.enlargeSize()
+
+    def handleWinfredFocusChangedSignal(self):
+        if not self.__winfredStatusManager.isWinfredActivated() or not self.isActiveWindow():
+            self.hide()
 
     def showMainSearch(self):
         self.setCurrentMode(WinfredMode.NormalMode)

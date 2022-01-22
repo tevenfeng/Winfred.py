@@ -22,6 +22,9 @@ def main():
         if conf.getConfByName("hide_on_start") != "yes":
             winfred.show()
 
+    if conf.getConfByName("hide_on_lose_focus") == "yes":
+        app.focusChanged.connect(winfred.handleWinfredFocusChangedSignal)
+
     sys.exit(app.exec())
 
 
