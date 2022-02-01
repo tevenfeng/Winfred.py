@@ -8,9 +8,9 @@ from pynput import keyboard
 
 from Winfred.Core.StatusManager import WinfredMode, StatusManager
 from Winfred.Core.SnippetManager import SnippetManager
-from Winfred.MainText import MainText
-from Winfred.SystemTray import SystemTray
-from Winfred.ResultsView import ResultsView
+from Winfred.Views.MainText import MainText
+from Winfred.Views.SystemTray import SystemTray
+from Winfred.Views.ResultsView import ResultsView
 
 
 class WinfredMainWindow(QMainWindow):

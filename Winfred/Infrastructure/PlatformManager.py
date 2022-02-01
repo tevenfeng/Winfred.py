@@ -1,6 +1,7 @@
 import platform
 from enum import Enum, unique
 
+from PySide6.QtCore import QObject
 
 @unique
 class OsPlatform(Enum):
@@ -10,7 +11,7 @@ class OsPlatform(Enum):
     Unknown = 4
 
 
-class PlatformManager(object):
+class PlatformManager(QObject):
     @staticmethod
     def detectOS():
         platform_str = platform.system()

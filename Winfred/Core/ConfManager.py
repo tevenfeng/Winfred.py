@@ -3,10 +3,12 @@ import logging
 import os
 import sys
 
+from PySide6.QtCore import QObject
+
 from Winfred.Infrastructure.PlatformManager import OsPlatform, PlatformManager
 
 
-class ConfManager(object):
+class ConfManager(QObject):
     def __init__(self):
         self.__isDebugMode = False
         self.__configParser = configparser.ConfigParser()
