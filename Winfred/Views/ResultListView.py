@@ -2,7 +2,7 @@ from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
 
 
-class ResultsListView(QListWidget):
+class ResultListView(QListWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
