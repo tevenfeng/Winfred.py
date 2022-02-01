@@ -1,5 +1,8 @@
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QListWidget, QListWidgetItem
+from PySide6.QtWidgets import QListWidget
+
+from Winfred.ViewModels.ResultItemModel import BaseResultItemModel, IconResultItemModel, SplitResultItemModel
+from Winfred.Views.ResultItemView import ResultItemView
 
 
 class ResultListView(QListWidget):
@@ -10,4 +13,7 @@ class ResultListView(QListWidget):
         font = QFont()
         font.setPointSize(24)
         self.setFont(font)
-        self.addItem(QListWidgetItem("test"))
+
+        temp_model = SplitResultItemModel("test_main_title", "test_sub_title", "", "test_main_title")
+
+        self.addItem(ResultItemView(temp_model))
