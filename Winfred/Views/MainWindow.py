@@ -10,7 +10,7 @@ from Winfred.Core.StatusManager import WinfredMode, StatusManager
 from Winfred.Core.SnippetManager import SnippetManager
 from Winfred.Views.MainText import MainText
 from Winfred.Views.SystemTray import SystemTray
-from Winfred.Views.ResultsView import ResultsView
+from Winfred.Views.ResultsListView import ResultsListView
 
 
 class WinfredMainWindow(QMainWindow):
@@ -69,7 +69,7 @@ class WinfredMainWindow(QMainWindow):
         self.__mainEdit.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.__mainLayout.addWidget(self.__mainEdit, 0, 0)
 
-        self.__resultsList = ResultsView(self)
+        self.__resultsList = ResultsListView(self)
         self.__mainLayout.addWidget(self.__resultsList, 1, 0)
         self.__resultsList.hide()
 
