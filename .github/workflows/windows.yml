@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Package Application
-      uses: ericoporto/pyinstaller-action-windows@main
+      uses: tevenfeng/Pyinstaller-docker@win64
       with:
         path: .
 
