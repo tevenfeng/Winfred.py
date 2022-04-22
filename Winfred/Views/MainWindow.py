@@ -36,16 +36,19 @@ class WinfredMainWindow(QMainWindow):
         self.__snippetManager.snippetReplaceSignal.connect(self.handleSnippetReplaceSignal)
 
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
-        self.__mainHotKeyListener = keyboard.GlobalHotKeys({"<ctrl>+<space>": self.__winfredMainSearchShowSignal.emit})
+        self.__mainHotKeyListener = keyboard.GlobalHotKeys({
+            "<ctrl>+<alt>": self.__winfredMainSearchShowSignal.emit,
+            "<cmd_l>+c": self.__winfredClipboardShowSignal.emit
+        })
         self.__mainHotKeyListener.start()
-
-        self.__clipboardHotKeyListener = keyboard.GlobalHotKeys({"<cmd_l>+c": self.__winfredClipboardShowSignal.emit})
-        self.__clipboardHotKeyListener.start()
 
         self.__winfredMainSearchShowSignal.connect(self.showMainSearch)
         self.__winfredClipboardShowSignal.connect(self.showClipboard)
 
         self.__keyboardController = keyboard.Controller()
+
+    def __del__(self):
+        self.__mainHotKeyListener.stop()
 
     def initUI(self, conf):
         self.setWindowTitle("Winfred")
