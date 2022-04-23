@@ -78,6 +78,9 @@ class WinfredMainWindow(QMainWindow):
 
         self.initSystemTrayIcon(conf)
 
+    def getCurrentMode(self):
+        return self.__winfredStatusManager.getWinfredMode()
+
     def setCurrentMode(self, mode: WinfredMode):
         self.__winfredStatusManager.setWinfredMode(mode)
 
@@ -111,6 +114,7 @@ class WinfredMainWindow(QMainWindow):
             self.backspaceNTimes(1)     # use input event to force focus on the __mainEdit(Windows need this)
 
     def hide(self):
+        self.setCurrentMode(WinfredMode.HideMode)
         self.__winfredStatusManager.setWinfredActivated(False)
         self.setVisible(False)
         self.clearFocus()
@@ -156,8 +160,12 @@ class WinfredMainWindow(QMainWindow):
             self.hide()
 
     def showMainSearch(self):
-        self.setCurrentMode(WinfredMode.NormalMode)
-        self.show()
+        current_mode = self.getCurrentMode()
+        if current_mode == WinfredMode.HideMode:
+            self.setCurrentMode(WinfredMode.NormalMode)
+            self.show()
+        elif current_mode == WinfredMode.NormalMode:
+            self.hide()
 
     def showClipboard(self):
         self.setCurrentMode(WinfredMode.DisplayMode)

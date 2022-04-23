@@ -5,6 +5,7 @@ from PySide6.QtCore import Signal, QObject
 
 @unique
 class WinfredMode(Enum):
+    HideMode = 0                # hiding mode
     NormalMode = 1              # only search bar
     ListMode = 2                # search bar and list
     DisplayMode = 3             # search bar, list and preview
