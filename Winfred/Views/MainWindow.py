@@ -38,7 +38,7 @@ class WinfredMainWindow(QMainWindow):
         QShortcut(QKeySequence(Qt.Key.Key_Escape), self, self.hide)
         self.__mainHotKeyListener = keyboard.GlobalHotKeys({
             "<ctrl>+<alt>": self.__winfredMainSearchShowSignal.emit,
-            "<cmd_l>+c": self.__winfredClipboardShowSignal.emit
+            # "<cmd_l>+c": self.__winfredClipboardShowSignal.emit,
         })
         self.__mainHotKeyListener.start()
 
